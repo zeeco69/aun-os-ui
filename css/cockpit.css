@@ -1,0 +1,84 @@
+:root {
+    --cyan: #00F3FF; --green: #39FF14; --red: #FF3333; 
+    --gold: #FFD700; --bg: #050505; --panel: rgba(8, 12, 16, 0.95);
+}
+body {
+    margin: 0; background: var(--bg); color: white;
+    font-family: 'Rajdhani', sans-serif; height: 100vh; overflow: hidden;
+    display: grid; grid-template-rows: 35px 1fr 300px;
+}
+/* Header */
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 15px; border-bottom: 1px solid #333; background: #0a0a0a;
+}
+h1 { font-family: 'Orbitron'; font-size: 16px; margin: 0; color: var(--gold); letter-spacing: 2px; }
+.version { font-size: 10px; color: #666; }
+.header-right { display: flex; gap: 15px; font-size: 11px; }
+.sys-stat span.online { color: var(--green); text-shadow: 0 0 5px var(--green); }
+.sys-stat span.offline { color: var(--red); }
+
+/* Main Layout */
+main { display: grid; grid-template-columns: 1fr 380px; height: 100%; overflow: hidden; }
+#chart-area { border-right: 1px solid #333; position: relative; }
+#right-panel { background: var(--panel); display: flex; flex-direction: column; border-left: 1px solid var(--cyan); }
+
+/* Reactor */
+.reactor-box {
+    height: 140px; display: flex; flex-direction: column; 
+    align-items: center; justify-content: center;
+    border-bottom: 1px solid #333; background: radial-gradient(circle, #112, #000);
+}
+#reactor-wrapper { width: 80px; height: 80px; }
+svg { width: 100%; height: 100%; filter: drop-shadow(0 0 5px var(--cyan)); }
+.reactor-ring { fill: none; stroke: #333; stroke-width: 2; }
+.reactor-cross { stroke: var(--cyan); stroke-width: 1; opacity: 0.5; }
+.reactor-core { fill: none; stroke: var(--cyan); stroke-width: 2; stroke-dasharray: 5 5; }
+.spin { animation: spin 10s linear infinite; transform-origin: 50px 50px; }
+.combo-count { font-family: 'Orbitron'; font-size: 28px; font-weight: 900; color: var(--cyan); line-height: 1; }
+.label { font-size: 9px; color: #666; }
+
+/* Persona List */
+.persona-container { flex: 1; overflow-y: auto; padding: 5px; }
+.p-card {
+    background: rgba(255,255,255,0.03); margin-bottom: 3px; padding: 4px 8px;
+    border-left: 3px solid #666; display: flex; flex-direction: column; cursor: pointer;
+}
+.p-row { display: flex; justify-content: space-between; font-size: 11px; font-family: 'Orbitron'; margin-bottom: 2px; }
+.p-bar { height: 3px; background: #222; width: 100%; }
+.p-fill { height: 100%; background: #666; width: 0%; transition: width 0.5s; }
+
+/* Footer */
+footer {
+    display: grid; grid-template-columns: 1fr 250px; 
+    background: #080808; border-top: 1px solid #333;
+}
+.constructor-area { display: flex; flex-direction: column; border-right: 1px solid #333; }
+.tf-bar { display: flex; height: 30px; border-bottom: 1px solid #222; }
+.tf-btn {
+    flex: 1; background: #111; border: none; border-right: 1px solid #222;
+    color: #666; font-family: 'Orbitron'; font-size: 11px; cursor: pointer;
+}
+.tf-btn.active { background: var(--cyan); color: #000; font-weight: bold; }
+.tf-btn.exit-btn.active { background: var(--red); color: #fff; }
+
+.element-grid {
+    flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 2px; padding: 5px; overflow-y: auto;
+}
+.el-btn {
+    background: #111; border: 1px solid #333; color: #aaa;
+    font-size: 10px; display: flex; align-items: center; justify-content: center;
+    padding: 5px; cursor: pointer; text-align: center; min-height: 40px;
+}
+.el-btn.selected { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 243, 255, 0.1); }
+
+.ea-panel { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+.ea-row { display: flex; justify-content: space-between; font-size: 11px; color: #888; }
+.val { color: white; font-weight: bold; font-family: 'Orbitron'; }
+.pnl-display { font-size: 24px; text-align: center; font-family: 'Orbitron'; color: var(--cyan); margin: 5px 0; }
+.inject-btn {
+    margin-top: auto; background: var(--gold); color: #000; border: none;
+    padding: 10px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
