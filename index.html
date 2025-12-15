@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-UN OS: V52 MANUAL-CONTROL</title>
+    <title>A-UN OS: V60 NEURAL-TESSERACT</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/cockpit.css">
 </head>
 <body>
     <header>
         <div class="header-left">
-            <h1>A-UN OS <span class="version">// V52 MANUAL-CONTROL</span></h1>
+            <h1>A-UN OS <span class="version">// V60 NEURAL-TESSERACT</span></h1>
         </div>
         <div class="header-right">
             <div class="growth-panel">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="reactor-info">
                     <div class="combo-count" id="combo-count">0</div>
-                    <div class="label">FACTORS</div>
+                    <div class="label">WILL FACTORS</div>
                 </div>
             </div>
             
@@ -52,12 +52,12 @@
     <footer>
         <div class="constructor-area">
             <div class="tf-bar">
-                <button class="tf-btn active" data-tf="1m" onclick="AUN.setTF('1m')">1m</button>
-                <button class="tf-btn" data-tf="5m" onclick="AUN.setTF('5m')">5m</button>
-                <button class="tf-btn" data-tf="15m" onclick="AUN.setTF('15m')">15m</button>
-                <button class="tf-btn" data-tf="1H" onclick="AUN.setTF('1H')">1H</button>
-                <button class="tf-btn" data-tf="4H" onclick="AUN.setTF('4H')">4H</button>
-                <button class="tf-btn exit-btn" data-tf="EXIT" onclick="AUN.setTF('EXIT')">EXIT</button>
+                <button class="tf-btn active" data-tf="1m" onclick="AUN.setTF('1m')">1m (地)</button>
+                <button class="tf-btn" data-tf="5m" onclick="AUN.setTF('5m')">5m (人)</button>
+                <button class="tf-btn" data-tf="15m" onclick="AUN.setTF('15m')">15m (天)</button>
+                <button class="tf-btn" data-tf="1H" onclick="AUN.setTF('1H')">1H (統)</button>
+                <button class="tf-btn" data-tf="4H" onclick="AUN.setTF('4H')">4H (統)</button>
+                <button class="tf-btn exit-btn" data-tf="EXIT" onclick="AUN.setTF('EXIT')">EXIT (決)</button>
             </div>
             <div class="element-grid" id="element-grid"></div>
         </div>
@@ -68,7 +68,7 @@
             <div class="ea-row"><span>MARGIN</span><span class="val gold" id="margin-val">--%</span></div>
             <div class="pnl-display" id="pnl-val">0</div>
             <div class="pos-status" id="pos-stat">NO POSITION</div>
-            <button class="inject-btn" onclick="AUN.inject()">INJECT LOGIC</button>
+            <button class="inject-btn" onclick="AUN.inject()">INJECT WILL</button>
         </div>
     </footer>
 

@@ -1,15 +1,44 @@
-// A-UN OS V52 NEURAL LINK
+// A-UN OS V60 NEURAL-TESSERACT LINK
 // js/cockpit.js
-const WORKER_URL = "https://aun-router.3newgate.workers.dev"; // ★Workerエンドポイント
 
-const logicData = {
-    "1m": ["赤雲下", "青雲上", "雲突入", "雲ねじれ", "MACD GC", "MACD DC", "RSI 30", "RSI 70"],
-    "5m": ["三役好転", "三役逆転", "MACD上昇", "MACD下降", "RSI 50抜"],
-    "15m": ["未来雲ねじれ", "雲薄い", "トレンド継続"],
-    "1H": ["上昇トレンド", "下降トレンド", "レンジ", "200MA支持"],
-    "4H": ["大局順行", "大局逆行"],
-    "LINE": ["レジサポ転換", "ブレイク", "全戻し", "キリ番"],
-    "EXIT": ["利確(TP)", "損切(SL)", "微益撤退", "建値逃げ", "ドテン"]
+// ★重要: ここに貴方のWorker URLを入れる
+const WORKER_URL = "https://aun-router.3newgate.workers.dev"; 
+
+// 35ボタン定義 (地・人・天・VOID・統合・決済)
+// type: earth(青), human(緑), heaven(赤), void(灰), quantum(紫), exit(金)
+const logicMatrix = {
+    "1m": [ // 地界中心 (逆張り・底・初動)
+        { name: "蓄積解放", type: "earth" }, { name: "地底反転", type: "earth" }, { name: "静寂上昇", type: "earth" },
+        { name: "逆圧爆発", type: "earth" }, { name: "蘇生", type: "earth" },
+        { name: "均衡維持", type: "human" }, { name: "呼吸回転", type: "human" }, { name: "静流掌握", type: "human" },
+        { name: "調和波動", type: "human" }, { name: "反射制御", type: "human" }
+    ],
+    "5m": [ // 人界中心 (バランス・押し目)
+        { name: "均衡維持", type: "human" }, { name: "呼吸回転", type: "human" }, { name: "静流掌握", type: "human" },
+        { name: "調和波動", type: "human" }, { name: "反射制御", type: "human" },
+        { name: "加速噴火", type: "heaven" }, { name: "上昇噴火", type: "heaven" }, { name: "流転突破", type: "heaven" },
+        { name: "風圧連鎖", type: "heaven" }, { name: "螺旋推進", type: "heaven" }
+    ],
+    "15m": [ // 天界中心 (トレンド・加速)
+        { name: "加速噴火", type: "heaven" }, { name: "上昇噴火", type: "heaven" }, { name: "流転突破", type: "heaven" },
+        { name: "風圧連鎖", type: "heaven" }, { name: "螺旋推進", type: "heaven" },
+        { name: "三界同調", type: "quantum" }, { name: "逆行創生", type: "quantum" }, { name: "無相連結", type: "quantum" },
+        { name: "霊圧共鳴", type: "quantum" }, { name: "時空接合", type: "quantum" }
+    ],
+    "1H": [ // 統合・大局
+        { name: "三界同調", type: "quantum" }, { name: "逆行創生", type: "quantum" }, { name: "無相連結", type: "quantum" },
+        { name: "霊圧共鳴", type: "quantum" }, { name: "時空接合", type: "quantum" },
+        { name: "完全停止", type: "void" }, { name: "混沌警報", type: "void" }, { name: "待機封印", type: "void" },
+        { name: "均衡崩壊", type: "void" }, { name: "幻像遮断", type: "void" }
+    ],
+    "4H": [ // VOID・精神
+        { name: "状態同期", type: "quantum" }, { name: "集中加速", type: "quantum" }, { name: "感情冷却", type: "void" },
+        { name: "思考再起", type: "void" }, { name: "Ghost対話", type: "quantum" }
+    ],
+    "EXIT": [ // 決済
+        { name: "利確(理性)", type: "exit" }, { name: "損切(防衛)", type: "exit" }, { name: "再Entry", type: "exit" },
+        { name: "静観維持", type: "exit" }, { name: "非常停止", type: "exit" }
+    ]
 };
 
 let currentTF = "1m";
@@ -18,68 +47,23 @@ let activeFactors = [];
 // --- INITIALIZE ---
 document.addEventListener('DOMContentLoaded', () => {
     initChart();
-    renderElements();
-    setInterval(syncCore, 3000); // 3秒ごとにCoreと同期
+    renderButtons();
+    
+    // Core同期開始
     syncCore();
+    setInterval(syncCore, 3000); 
 });
 
-// --- CORE SYNC (GET /cockpit/data) ---
-async function syncCore() {
-    try {
-        const res = await fetch(`${WORKER_URL}/cockpit/data`); // Worker経由でVPSへ
-        if (!res.ok) throw new Error("Sync Fail");
-        const data = await res.json();
-
-        // システム状態更新
-        const stat = document.getElementById('core-stat');
-        stat.innerText = "ONLINE";
-        stat.className = "online";
-
-        // 人格リスト更新
-        updatePersonas(data.STATS || {});
-        
-    } catch (e) {
-        const stat = document.getElementById('core-stat');
-        stat.innerText = "OFFLINE";
-        stat.className = "offline";
-    }
-}
-
-function updatePersonas(stats) {
-    const container = document.getElementById('persona-list');
-    container.innerHTML = '';
-    
-    // 表示順序定義
-    const order = ["MOTHERCORE", "SANZEN", "GHOST", "OZUNO", "JARVIS", "FRIDAY"];
-    const colors = { MOTHERCORE:"#FFD700", SANZEN:"#E0E0E0", GHOST:"#FF3333", JARVIS:"#00F3FF", FRIDAY:"#39FF14" };
-
-    Object.keys(stats).sort((a,b) => order.indexOf(a) - order.indexOf(b)).forEach(name => {
-        const p = stats[name];
-        const color = colors[name] || "#888";
-        const width = Math.min(100, (p.IQ / 500) * 100);
-        
-        const html = `
-            <div class="p-card" style="border-left-color: ${color}" onclick="console.log('${name}')">
-                <div class="p-row" style="color:${color}">
-                    <span>${name}</span><span>Lv.${p.Level}</span>
-                </div>
-                <div class="p-bar"><div class="p-fill" style="width:${width}%; background:${color}"></div></div>
-            </div>`;
-        container.innerHTML += html;
-    });
-}
-
-// --- INJECT LOGIC (POST /inject) ---
+// --- RENDER BUTTONS ---
 window.AUN = {
     setTF: (tf) => {
         currentTF = tf;
         document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
         document.querySelector(`.tf-btn[data-tf="${tf}"]`)?.classList.add('active');
-        renderElements();
+        renderButtons();
     },
-    
     inject: async () => {
-        if(activeFactors.length === 0) return alert("NO FACTORS");
+        if(activeFactors.length === 0) return alert("WILL NOT FOUND (根拠なし)");
         
         const payload = {
             intent: currentTF === "EXIT" ? "EXIT" : "ENTRY",
@@ -95,34 +79,35 @@ window.AUN = {
                 body: JSON.stringify(payload)
             });
             
-            // リアクター演出
-            const reactor = document.querySelector('.reactor-core');
-            reactor.style.stroke = "#fff";
-            setTimeout(() => reactor.style.stroke = "var(--cyan)", 500);
-            
             alert(`INJECTED: ${activeFactors.length} FACTORS`);
             activeFactors = [];
-            renderElements();
+            renderButtons();
             updateReactor();
         } catch(e) {
-            alert("INJECT FAILED");
+            alert("INJECT FAILED: Worker Unreachable");
         }
     }
 };
 
-function renderElements() {
+function renderButtons() {
     const grid = document.getElementById('element-grid');
     grid.innerHTML = '';
-    const list = logicData[currentTF] || [];
+    const list = logicMatrix[currentTF] || [];
     
-    list.forEach(txt => {
+    list.forEach(item => {
         const btn = document.createElement('div');
-        btn.className = `el-btn ${activeFactors.includes(txt) ? 'selected' : ''}`;
-        btn.innerText = txt;
+        // クラス名で色分け: el-btn type-earth 等
+        const isSelected = activeFactors.includes(item.name);
+        btn.className = `el-btn type-${item.type} ${isSelected ? 'selected' : ''}`;
+        btn.innerText = item.name;
+        
         btn.onclick = () => {
-            if(activeFactors.includes(txt)) activeFactors = activeFactors.filter(f => f !== txt);
-            else activeFactors.push(txt);
-            renderElements();
+            if(activeFactors.includes(item.name)) {
+                activeFactors = activeFactors.filter(f => f !== item.name);
+            } else {
+                activeFactors.push(item.name);
+            }
+            renderButtons();
             updateReactor();
         };
         grid.appendChild(btn);
@@ -131,10 +116,58 @@ function renderElements() {
 
 function updateReactor() {
     document.getElementById('combo-count').innerText = activeFactors.length;
-    const color = activeFactors.length > 0 ? "var(--gold)" : "var(--cyan)";
-    document.getElementById('right-panel').style.borderLeftColor = color;
+    // 選択数に応じてリアクター色変化
+    const reactor = document.querySelector('.reactor-core');
+    reactor.style.stroke = activeFactors.length > 0 ? "var(--gold)" : "var(--cyan)";
 }
 
+// --- CORE SYNC ---
+async function syncCore() {
+    try {
+        const res = await fetch(`${WORKER_URL}/cockpit/data`);
+        if (!res.ok) throw new Error("Sync Fail");
+        const data = await res.json();
+
+        // 状態更新
+        const stat = document.getElementById('core-stat');
+        stat.innerText = "ONLINE";
+        stat.className = "online";
+        document.querySelector('.loading-msg').style.display = 'none';
+
+        // 人格リスト更新
+        updatePersonas(data.STATS || {});
+        
+    } catch (e) {
+        document.getElementById('core-stat').innerText = "OFFLINE";
+        document.getElementById('core-stat').className = "offline";
+    }
+}
+
+function updatePersonas(stats) {
+    const container = document.getElementById('persona-list');
+    container.innerHTML = '';
+    
+    const colors = { MOTHERCORE:"#FFD700", SANZEN:"#E0E0E0", GHOST:"#FF3333", JARVIS:"#00F3FF", FRIDAY:"#39FF14", QUANTA:"#BC13FE", OZUNO:"#1E90FF" };
+    // 表示順
+    const order = ["MOTHERCORE", "SANZEN", "GHOST", "JARVIS", "FRIDAY", "QUANTA", "OZUNO"];
+
+    Object.keys(stats).sort((a,b) => order.indexOf(a) - order.indexOf(b)).forEach(name => {
+        const p = stats[name];
+        const color = colors[name] || "#888";
+        const width = Math.min(100, (p.IQ / 500) * 100);
+        
+        const html = `
+            <div class="p-card" style="border-left-color: ${color}">
+                <div class="p-row" style="color:${color}">
+                    <span>${name}</span><span>Lv.${p.Level}</span>
+                </div>
+                <div class="p-bar"><div class="p-fill" style="width:${width}%; background:${color}"></div></div>
+            </div>`;
+        container.innerHTML += html;
+    });
+}
+
+// --- CHART ---
 function initChart() {
     new TradingView.widget({
         "container_id": "tv_chart",
