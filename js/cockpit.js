@@ -1,8 +1,8 @@
 // A-UN OS V60 NEURAL-TESSERACT LINK
 // js/cockpit.js
 
-// ★重要: 先ほど開通した新しいCloudflare TunnelのURL
-const WORKER_URL = "https://maintained-males-isaac-kit.trycloudflare.com";
+// ↓ これをそのままコピーして上書きせよ
+const WORKER_URL = "https://denver-garage-closes-maps.trycloudflare.com";
 const logicMatrix = {
     "1m": [
         { name: "蓄積解放", type: "earth" }, { name: "地底反転", type: "earth" }, { name: "静寂上昇", type: "earth" },
