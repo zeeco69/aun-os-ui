@@ -1,7 +1,6 @@
 // A-UN OS V60 NEURAL-TESSERACT LINK
 // js/cockpit.js
 
-// ↓ これをそのままコピーして上書きせよ
 const WORKER_URL = "https://denver-garage-closes-maps.trycloudflare.com";
 const logicMatrix = {
     "1m": [
