@@ -1,7 +1,7 @@
 // A-UN OS V60 NEURAL-TESSERACT LINK
 // js/cockpit.js
 
-const WORKER_URL = "https://explicitly-inch-duplicate-contrast.trycloudflare.com";
+const WORKER_URL = "https://hidden-ruled-ment-villa.trycloudflare.com";
 const logicMatrix = {
     "1m": [
         { name: "蓄積解放", type: "earth" }, { name: "地底反転", type: "earth" }, { name: "静寂上昇", type: "earth" },
