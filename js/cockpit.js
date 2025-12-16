@@ -1,8 +1,8 @@
 // A-UN OS V60 NEURAL-TESSERACT LINK
 // js/cockpit.js
 
-// 接続先Worker (V60確定)
-const WORKER_URL = "https://aun-router-v60.3newgate.workers.dev"; 
+// ★重要: 先ほど開通した新しいCloudflare TunnelのURL
+const WORKER_URL = "https://maintained-males-isaac-kit.trycloudflare.com";
 
 const logicMatrix = {
     "1m": [
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initChart();
     renderButtons();
     syncCore();
-    setInterval(syncCore, 5000); // 5秒ごとに再試行
+    setInterval(syncCore, 5000); 
 });
 
 window.AUN = {
@@ -117,7 +117,6 @@ function updateReactor() {
 async function syncCore() {
     const stat = document.getElementById('core-stat');
     try {
-        // 接続テスト
         const res = await fetch(`${WORKER_URL}/cockpit/data`);
         
         if (!res.ok) {
@@ -125,8 +124,6 @@ async function syncCore() {
         }
         
         const data = await res.json();
-
-        // 成功時
         stat.innerText = "ONLINE";
         stat.className = "online";
         document.querySelector('.loading-msg').style.display = 'none';
@@ -134,21 +131,19 @@ async function syncCore() {
         updatePersonas(data.STATS || {});
         
     } catch (e) {
-        // 失敗時：エラー内容を表示
         console.error("Sync Error:", e);
-        stat.innerText = "ERR: " + e.message; // 画面に理由を出す
+        stat.innerText = "ERR: " + e.message;
         stat.className = "offline";
     }
 }
 
 function updatePersonas(stats) {
     const container = document.getElementById('persona-list');
-    if(!container.innerHTML.includes("p-card")) container.innerHTML = ''; // 初回のみクリア
+    if(!container.innerHTML.includes("p-card")) container.innerHTML = ''; 
     
     const colors = { MOTHERCORE:"#FFD700", SANZEN:"#E0E0E0", GHOST:"#FF3333", JARVIS:"#00F3FF", FRIDAY:"#39FF14", QUANTA:"#BC13FE", OZUNO:"#1E90FF" };
     const order = ["MOTHERCORE", "SANZEN", "GHOST", "JARVIS", "FRIDAY", "QUANTA", "OZUNO"];
 
-    // 差分更新のためにHTML再構築
     let html = "";
     Object.keys(stats).sort((a,b) => order.indexOf(a) - order.indexOf(b)).forEach(name => {
         const p = stats[name];
@@ -167,7 +162,6 @@ function updatePersonas(stats) {
 }
 
 function initChart() {
-    // 既存のチャートがあれば再生成しない
     if(document.getElementById('tv_chart').innerHTML !== "") return;
     
     new TradingView.widget({
