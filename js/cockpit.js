@@ -1,7 +1,7 @@
 // A-UN OS V60 NEURAL-TESSERACT LINK
 // js/cockpit.js
 
-const WORKER_URL = "https://prevention-taxes-pty-press.trycloudflare.com";
+const WORKER_URL = "https://aun-os-router.3newgate.workers.dev";
 const logicMatrix = {
     "1m": [
         { name: "蓄積解放", type: "earth" }, { name: "地底反転", type: "earth" }, { name: "静寂上昇", type: "earth" },
