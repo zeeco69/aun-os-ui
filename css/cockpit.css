@@ -7,29 +7,31 @@
 body {
     margin: 0; background: var(--void); color: white;
     font-family: 'Rajdhani', sans-serif; height: 100vh; overflow: hidden;
-    display: grid; grid-template-rows: 35px 1fr 280px; /* Footer高さ固定 */
+    display: grid; grid-template-rows: 35px 1fr 280px;
 }
 
-/* Header */
+/* Header Fix */
 header {
     display: flex; justify-content: space-between; align-items: center;
     padding: 0 15px; border-bottom: 1px solid #333; background: #0a0a0a;
 }
 h1 { font-family: 'Orbitron'; font-size: 16px; margin: 0; color: var(--gold); letter-spacing: 2px; }
+
+/* 右上のレイアウト調整 */
+.header-right { display: flex; align-items: center; gap: 20px; }
+.growth-panel { display: flex; align-items: center; gap: 10px; min-width: 180px; }
+.sys-stat { font-family: 'Orbitron'; font-weight: bold; min-width: 100px; text-align: right; }
 .sys-stat span.online { color: var(--green); text-shadow: 0 0 5px var(--green); }
 .sys-stat span.offline { color: var(--red); }
+.xp-bar-bg { flex: 1; height: 6px; background: #333; border-radius: 3px; position: relative; overflow: hidden; }
+.xp-bar-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.5s; }
 
-/* Main Layout */
 main { display: grid; grid-template-columns: 1fr 320px; height: 100%; overflow: hidden; }
-#chart-area { 
-    border-right: 1px solid #333; position: relative; 
-    height: 100%; width: 100%; /* 高さ確保 */
-}
-#tv_chart { height: 100%; width: 100%; } /* TV自体の高さ */
+#chart-area { border-right: 1px solid #333; position: relative; height: 100%; width: 100%; }
+#tv_chart { height: 100%; width: 100%; }
 
 #right-panel { background: var(--panel); display: flex; flex-direction: column; border-left: 1px solid var(--cyan); }
 
-/* Reactor */
 .reactor-box {
     height: 120px; display: flex; flex-direction: column; 
     align-items: center; justify-content: center;
@@ -40,7 +42,6 @@ svg { width: 80px; height: 80px; filter: drop-shadow(0 0 5px var(--cyan)); }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 .combo-count { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; color: var(--cyan); }
 
-/* Persona List */
 .persona-container { flex: 1; overflow-y: auto; padding: 5px; }
 .p-card {
     background: rgba(255,255,255,0.03); margin-bottom: 3px; padding: 4px 8px;
@@ -50,7 +51,6 @@ svg { width: 80px; height: 80px; filter: drop-shadow(0 0 5px var(--cyan)); }
 .p-bar { height: 3px; background: #222; width: 100%; }
 .p-fill { height: 100%; width: 0%; transition: width 0.5s; }
 
-/* Footer & Buttons */
 footer {
     display: grid; grid-template-columns: 1fr 220px; 
     background: #080808; border-top: 1px solid #333;
@@ -66,7 +66,7 @@ footer {
 .tf-btn[data-tf="EXIT"].active { background: var(--red); color: white; }
 
 .element-grid {
-    flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); /* 5列グリッド */
+    flex: 1; display: grid; grid-template-columns: repeat(5, 1fr);
     gap: 2px; padding: 2px; overflow-y: auto;
 }
 .el-btn {
@@ -78,14 +78,12 @@ footer {
 }
 .el-btn:hover { background: #222; }
 
-/* Button Colors by Type */
-.el-btn.type-earth { border-color: var(--blue); color: var(--blue); } /* 地界 */
-.el-btn.type-human { border-color: var(--green); color: var(--green); } /* 人界 */
-.el-btn.type-heaven { border-color: var(--red); color: var(--red); } /* 天界 */
-.el-btn.type-void { border-color: #666; color: #666; } /* VOID */
-.el-btn.type-quantum { border-color: var(--purple); color: var(--purple); } /* 統合 */
-.el-btn.type-exit { border-color: var(--gold); color: var(--gold); } /* 決済 */
-
+.el-btn.type-earth { border-color: var(--blue); color: var(--blue); }
+.el-btn.type-human { border-color: var(--green); color: var(--green); }
+.el-btn.type-heaven { border-color: var(--red); color: var(--red); }
+.el-btn.type-void { border-color: #666; color: #666; }
+.el-btn.type-quantum { border-color: var(--purple); color: var(--purple); }
+.el-btn.type-exit { border-color: var(--gold); color: var(--gold); }
 .el-btn.selected { background: rgba(255,255,255,0.15); font-weight: bold; box-shadow: 0 0 5px inset; }
 
 .ea-panel { padding: 5px; display: flex; flex-direction: column; gap: 3px; }
